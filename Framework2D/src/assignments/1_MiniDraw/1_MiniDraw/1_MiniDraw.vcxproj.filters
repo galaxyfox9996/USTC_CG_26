@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="E:\github clone\USTC_CG_26_mine\Framework2D\src\assignments\1_MiniDraw\canvas_widget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\github clone\USTC_CG_26_mine\Framework2D\src\assignments\1_MiniDraw\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\github clone\USTC_CG_26_mine\Framework2D\src\assignments\1_MiniDraw\minidraw_window.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\github clone\USTC_CG_26_mine\Framework2D\src\assignments\1_MiniDraw\shapes\ellipse.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\github clone\USTC_CG_26_mine\Framework2D\src\assignments\1_MiniDraw\shapes\line.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\github clone\USTC_CG_26_mine\Framework2D\src\assignments\1_MiniDraw\shapes\rect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="E:\github clone\USTC_CG_26_mine\Framework2D\src\assignments\1_MiniDraw\canvas_widget.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\github clone\USTC_CG_26_mine\Framework2D\src\assignments\1_MiniDraw\minidraw_window.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\github clone\USTC_CG_26_mine\Framework2D\src\assignments\1_MiniDraw\shapes\ellipse.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\github clone\USTC_CG_26_mine\Framework2D\src\assignments\1_MiniDraw\shapes\line.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\github clone\USTC_CG_26_mine\Framework2D\src\assignments\1_MiniDraw\shapes\rect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\github clone\USTC_CG_26_mine\Framework2D\src\assignments\1_MiniDraw\shapes\shape.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="E:\github clone\USTC_CG_26_mine\Framework2D\src\assignments\1_MiniDraw\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{60DFC018-B9BD-3096-B442-C191F980E4F2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{CF6359D3-E297-3566-8391-F1F4D13F27E9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

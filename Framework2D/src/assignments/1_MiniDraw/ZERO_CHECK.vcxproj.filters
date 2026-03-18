@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="E:\github clone\USTC_CG_26_mine\Framework2D\src\assignments\1_MiniDraw\CMakeFiles\8b71e37f3624f90668dabbb4e07b93aa\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{8DDCA3F5-3833-306C-A67B-7DD6AC2F57AB}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
