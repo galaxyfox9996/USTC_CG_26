@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include <Eigen/Dense>
+#include "_deps/Eigen/Dense"
 
 using namespace std;
 using namespace Eigen;
@@ -30,5 +30,9 @@ int main() {
 
   cout << x << endl;
 
+    // 添加暂停
+  cout << "\n print";
+  cin.get();  // 等待用户输入
+  
   return 0;
 }
