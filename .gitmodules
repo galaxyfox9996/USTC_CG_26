@@ -10,3 +10,6 @@
 [submodule "Framework3D/Ruzino"]
 	path = Framework3D/Ruzino
 	url = https://github.com/SyouSanGin/Ruzino-Homework
+[submodule "Framework2D/third_party/annoy"]
+	path = Framework2D/third_party/annoy
+	url = https://github.com/spotify/annoy.git
