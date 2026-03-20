@@ -15,6 +15,14 @@ namespace USTC_CG
 class Warper
 {
    public:
+    struct Point
+    {
+        double x;
+        double y;
+        Point(double x = 0, double y = 0) : x(x), y(y) {}
+    };
+    
+   public:
     virtual ~Warper() = default;
 
     // HW2_TODO: A virtual function warp(...)

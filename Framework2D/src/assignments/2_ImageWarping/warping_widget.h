@@ -30,12 +30,14 @@ class WarpingWidget : public ImageWidget
         kFisheye = 1,
         kIDW = 2,
         kRBF = 3,
+        kIDW_plus = 4,
     };
     // Warping type setters.
     void set_default();
     void set_fisheye();
     void set_IDW();
     void set_RBF();
+    void set_IDW_plus();
 
     // Point selecting interaction
     void enable_selecting(bool flag);
@@ -52,7 +54,7 @@ class WarpingWidget : public ImageWidget
     bool flag_enable_selecting_points_ = false;
     bool draw_status_ = false;
     WarpingType warping_type_;
-
+    Image fill(std::vector<ImVec2>& stock,Image warped_image);
    private:
     // A simple "fish-eye" warping function
     std::pair<int, int> fisheye_warping(int x, int y, int width, int height);
