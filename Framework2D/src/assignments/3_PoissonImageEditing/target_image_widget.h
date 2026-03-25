@@ -1,5 +1,8 @@
 #pragma once
 
+#include <memory>
+
+#include "seamless_clone.h"
 #include "source_image_widget.h"
 #include "common/image_widget.h"
 
@@ -14,7 +17,8 @@ class TargetImageWidget : public ImageWidget
     {
         kDefault = 0,
         kPaste = 1,
-        kSeamless = 2
+        kSeamless = 2,
+        kMixed = 3
     };
 
     explicit TargetImageWidget(
@@ -33,6 +37,7 @@ class TargetImageWidget : public ImageWidget
     // type, you can implement seamless cloning, mix-gradient cloning, etc.
     void set_paste();
     void set_seamless();
+    void set_mixed();
 
     // The clone function
     void clone();
@@ -50,6 +55,7 @@ class TargetImageWidget : public ImageWidget
     std::shared_ptr<Image> back_up_;
     // Source image
     std::shared_ptr<SourceImageWidget> source_image_;
+    std::unique_ptr<SeamlessClone> seamless_clone_;
     CloneType clone_type_ = kDefault;
 
     ImVec2 mouse_position_;

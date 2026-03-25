@@ -1,5 +1,8 @@
 #pragma once
 
+#include <utility>
+#include <vector>
+
 namespace USTC_CG
 {
 class Shape
@@ -47,5 +50,10 @@ class Shape
      * @param x, y Control point to be added. e.g. vertex of a polygon.
      */
     virtual void add_control_point(float x, float y) {}
+
+    /**
+     * Returns all rasterized interior pixels covered by the shape.
+     */
+    virtual std::vector<std::pair<int, int>> get_interior_pixels() const = 0;
 };
 }  // namespace USTC_CG

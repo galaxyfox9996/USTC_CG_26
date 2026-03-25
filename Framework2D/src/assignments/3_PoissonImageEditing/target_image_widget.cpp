@@ -45,6 +45,7 @@ void TargetImageWidget::draw()
 void TargetImageWidget::set_source(std::shared_ptr<SourceImageWidget> source)
 {
     source_image_ = source;
+    seamless_clone_.reset();
 }
 
 void TargetImageWidget::set_realtime(bool flag)
@@ -66,6 +67,11 @@ void TargetImageWidget::set_paste()
 void TargetImageWidget::set_seamless()
 {
     clone_type_ = kSeamless;
+}
+
+void TargetImageWidget::set_mixed()
+{
+    clone_type_ = kMixed;
 }
 
 void TargetImageWidget::clone()
@@ -118,11 +124,28 @@ void TargetImageWidget::clone()
             break;
         }
         case USTC_CG::TargetImageWidget::kSeamless:
+        case USTC_CG::TargetImageWidget::kMixed:
         {
             // HW3_TODO: You should implement your own seamless cloning. For
             // each pixel in the selected region, calculate the final RGB color
             // by solving Poisson Equations.
             restore();
+            if (!seamless_clone_)
+            {
+                seamless_clone_ = std::make_unique<SeamlessClone>(
+                    source_image_->get_data(), back_up_, mask);
+            }
+
+            const int offset_x = static_cast<int>(mouse_position_.x) -
+                                 static_cast<int>(source_image_->get_position().x);
+            const int offset_y = static_cast<int>(mouse_position_.y) -
+                                 static_cast<int>(source_image_->get_position().y);
+            seamless_clone_->set_offset(offset_x, offset_y);
+            seamless_clone_->set_gradient_mode(
+                clone_type_ == kMixed
+                    ? SeamlessClone::GradientMode::kMixed
+                    : SeamlessClone::GradientMode::kImport);
+            data_ = seamless_clone_->solve();
 
             break;
         }

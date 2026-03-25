@@ -73,6 +73,18 @@ void PoissonWindow::draw_toolbar()
             "to select rectangle (default) in the source.");
         if (p_source_)
             p_source_->enable_selecting(selectable);
+
+        if (ImGui::BeginMenu("Region") && p_source_)
+        {
+            if (ImGui::MenuItem("Rectangle"))
+                p_source_->set_region_rect();
+            if (ImGui::MenuItem("Polygon"))
+                p_source_->set_region_polygon();
+            if (ImGui::MenuItem("Freehand"))
+                p_source_->set_region_freehand();
+            ImGui::EndMenu();
+        }
+
         static bool realtime = false;
         ImGui::Checkbox("Realtime", &realtime);
         add_tooltips(
@@ -93,6 +105,16 @@ void PoissonWindow::draw_toolbar()
             "clone the selected region to the target image.");
         // HW3_TODO: You may add more items in the menu for the different types
         // of Poisson editing.
+        if (ImGui::MenuItem("Seamless") && p_target_ && p_source_)
+        {
+            p_target_->set_seamless();
+        }
+        add_tooltips("Poisson seamless cloning with imported source gradients.");
+        if (ImGui::MenuItem("Mixed Gradients") && p_target_ && p_source_)
+        {
+            p_target_->set_mixed();
+        }
+        add_tooltips("Poisson cloning with mixed gradients from source and target.");
 
         ImGui::EndMainMenuBar();
     }

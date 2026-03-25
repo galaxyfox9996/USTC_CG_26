@@ -7,6 +7,15 @@ namespace USTC_CG
 {
 using uchar = unsigned char;
 
+namespace
+{
+template <typename T>
+T clamp_value(const T& value, const T& low, const T& high)
+{
+    return std::min(std::max(value, low), high);
+}
+}  // namespace
+
 SourceImageWidget::SourceImageWidget(
     const std::string& label,
     const std::string& filename)
@@ -29,6 +38,10 @@ void SourceImageWidget::draw()
 void SourceImageWidget::enable_selecting(bool flag)
 {
     flag_enable_selecting_region_ = flag;
+    if (!flag)
+    {
+        draw_status_ = false;
+    }
 }
 
 void SourceImageWidget::select_region()
@@ -50,7 +63,12 @@ void SourceImageWidget::select_region()
         mouse_click_event();
     }
     mouse_move_event();
-    if (!ImGui::IsMouseDown(ImGuiMouseButton_Left))
+    if (region_type_ == kPolygon)
+    {
+        if (is_hovered_ && ImGui::IsMouseClicked(ImGuiMouseButton_Right))
+            mouse_release_event();
+    }
+    else if (!ImGui::IsMouseDown(ImGuiMouseButton_Left))
         mouse_release_event();
 
     // Region Shape Visualization
@@ -79,9 +97,65 @@ ImVec2 SourceImageWidget::get_position() const
     return start_;
 }
 
+void SourceImageWidget::set_region_rect()
+{
+    region_type_ = kRect;
+    draw_status_ = false;
+    selected_shape_.reset();
+}
+
+void SourceImageWidget::set_region_polygon()
+{
+    region_type_ = kPolygon;
+    draw_status_ = false;
+    selected_shape_.reset();
+}
+
+void SourceImageWidget::set_region_freehand()
+{
+    region_type_ = kFreehand;
+    draw_status_ = false;
+    selected_shape_.reset();
+}
+
 void SourceImageWidget::mouse_click_event()
 {
-    // Start drawing the region 
+    // Start drawing the region
+    if (region_type_ == kFreehand)
+    {
+        if (!draw_status_)
+        {
+            draw_status_ = true;
+            start_ = end_ = mouse_pos_in_canvas();
+            auto freehand = std::make_unique<Freehand>();
+            freehand->add_control_point(start_.x, start_.y);
+            selected_shape_ = std::move(freehand);
+        }
+        return;
+    }
+
+    if (region_type_ == kPolygon)
+    {
+        const ImVec2 point = mouse_pos_in_canvas();
+        if (!draw_status_)
+        {
+            draw_status_ = true;
+            start_ = end_ = point;
+            auto polygon = std::make_unique<Polygon>();
+            polygon->add_control_point(point.x, point.y);
+            selected_shape_ = std::move(polygon);
+            return;
+        }
+
+        end_ = point;
+        if (selected_shape_)
+        {
+            selected_shape_->add_control_point(point.x, point.y);
+            selected_shape_->update(point.x, point.y);
+        }
+        return;
+    }
+
     if (!draw_status_)
     {
         draw_status_ = true;
@@ -93,11 +167,11 @@ void SourceImageWidget::mouse_click_event()
         {
             case USTC_CG::SourceImageWidget::kDefault: break;
             case USTC_CG::SourceImageWidget::kRect:
-            {
                 selected_shape_ =
                     std::make_unique<Rect>(start_.x, start_.y, end_.x, end_.y);
                 break;
-            }
+            case USTC_CG::SourceImageWidget::kPolygon: break;
+            case USTC_CG::SourceImageWidget::kFreehand: break;
             default: break;
         }
     }
@@ -110,7 +184,12 @@ void SourceImageWidget::mouse_move_event()
     {
         end_ = mouse_pos_in_canvas();
         if (selected_shape_)
-            selected_shape_->update(end_.x, end_.y);
+        {
+            if (region_type_ == kFreehand)
+                selected_shape_->add_control_point(end_.x, end_.y);
+            else
+                selected_shape_->update(end_.x, end_.y);
+        }
     }
 }
 
@@ -119,6 +198,30 @@ void SourceImageWidget::mouse_release_event()
     // Finish drawing the region
     if (draw_status_ && selected_shape_)
     {
+        if (region_type_ == kFreehand)
+        {
+            auto* freehand = dynamic_cast<Freehand*>(selected_shape_.get());
+            if (freehand && freehand->point_count() >= 3)
+            {
+                freehand->set_closed(true);
+                draw_status_ = false;
+                update_selected_region();
+            }
+            return;
+        }
+
+        if (region_type_ == kPolygon)
+        {
+            auto* polygon = dynamic_cast<Polygon*>(selected_shape_.get());
+            if (polygon && polygon->point_count() >= 3)
+            {
+                polygon->set_closed(true);
+                draw_status_ = false;
+                update_selected_region();
+            }
+            return;
+        }
+
         draw_status_ = false;
         // Update the selected region.
         update_selected_region();
@@ -130,9 +233,9 @@ ImVec2 SourceImageWidget::mouse_pos_in_canvas() const
     ImGuiIO& io = ImGui::GetIO();
     // The position should not be out of the canvas
     const ImVec2 mouse_pos_in_canvas(
-        std::clamp<float>(io.MousePos.x - position_.x, 0, (float)image_width_),
-        std::clamp<float>(
-            io.MousePos.y - position_.y, 0, (float)image_height_));
+        clamp_value<float>(io.MousePos.x - position_.x, 0.0f, (float)image_width_),
+        clamp_value<float>(
+            io.MousePos.y - position_.y, 0.0f, (float)image_height_));
     return mouse_pos_in_canvas;
 }
 
