@@ -5,7 +5,7 @@ import torch
 import torchvision
 import matplotlib.pyplot as plt
 
-
+#加载图像数据集并做预处理
 def load_transformed_dataset(img_size=256, batch_size=128) -> DataLoader:
     # Load dataset and perform data transformations
     data_transforms = [
@@ -25,8 +25,8 @@ def load_transformed_dataset(img_size=256, batch_size=128) -> DataLoader:
 
     return DataLoader(dataset, batch_size=batch_size, shuffle=True, drop_last=True)
 
-
-def show_tensor_image(image):
+#把模型中的 tensor（[-1,1]）变回可显示图片
+def show_tensor_image(image):           
     # Reverse the data transformations
     reverse_transforms = transforms.Compose(
         [

@@ -16,8 +16,9 @@ def get_loss(model, x_0, t, device):
     x_noisy, noise = forward_diffusion_sample(x_0, t, device)
     
     # DO STH...
-    
-    return None
+    pred = model(x_noisy,t)
+    loss = F.mse_loss(pred,noise)
+    return loss
 
 
 if __name__ == "__main__":
@@ -37,9 +38,15 @@ if __name__ == "__main__":
     for epoch in range(epochs):
         for batch_idx, (batch, _) in enumerate(dataloader):
             optimizer.zero_grad()
-
             # TODO: 完成对时间步的采样、Loss计算以及反向传播
-            loss = 0
+            # 数据放到对应设备
+            batch = batch.to(device)
+            # 时间步采样
+            t = torch.randint(0,T,(BATCH_SIZE,),device=device).long()
+            loss = get_loss(model,batch,t,device)
+            # 反向传播
+            loss.backward()
+
             optimizer.step()
 
             if batch_idx % 50 == 0:
