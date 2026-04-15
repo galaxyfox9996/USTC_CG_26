@@ -7,3 +7,4 @@ imgui.ini
 .vs
 *.zip
 *eigen_example*/src/_deps/
+*.pth
